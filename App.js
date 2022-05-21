@@ -13,7 +13,10 @@ export default function App() {
 
   const onHandleSubmit = () => {
     setTask("");
-    setTasks([...tasks, task]);
+    setTasks((currentTasks) => [
+      ...currentTasks,
+      { id: Math.random(), value: task },
+    ]);
   };
 
   return (
@@ -35,9 +38,9 @@ export default function App() {
       {tasks.length > 0 && (
         <View style={styles.containerList}>
           <Text style={styles.titleList}>Task List</Text>
-          {tasks.map((item, idx) => (
-            <View key={`task-${idx}`} style={styles.containerItem}>
-              <Text style={styles.item}>{item}</Text>
+          {tasks.map((item) => (
+            <View key={`task-${item.id}`} style={styles.containerItem}>
+              <Text style={styles.item}>{item.value}</Text>
             </View>
           ))}
         </View>
