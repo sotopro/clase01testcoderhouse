@@ -7,12 +7,16 @@ import {
   TextInput,
   Button,
   FlatList,
+  TouchableOpacity,
+  Modal,
 } from "react-native";
 import { themes } from "./src/constants/themes/index";
 
 export default function App() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [itemSelected, setItemSelected] = useState({});
 
   const onHandleInput = (text) => {
     setTask(text);
@@ -26,10 +30,29 @@ export default function App() {
     setTask("");
   };
 
+  const onHandleDelete = (itemSelected) => {
+    setTasks((currentTasks) =>
+      currentTasks.filter((task) => task.id !== itemSelected.id)
+    );
+    setItemSelected({});
+    setModalVisible(!modalVisible);
+  };
+
+  const handleModal = (id) => {
+    setItemSelected(tasks.filter((item) => item.id === id)[0]);
+    setModalVisible(!modalVisible);
+  };
+
   const renderItem = ({ item }) => {
     return (
       <View key={`task-${item.id}`} style={styles.containerItem}>
         <Text style={styles.item}>{item.value}</Text>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleModal(item.id)}
+        >
+          <Text style={styles.deleteButtonText}>X</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -61,6 +84,27 @@ export default function App() {
         keyExtractor={(item) => item.id.toString()}
         style={styles.containerList}
       />
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => null}
+      >
+        <View style={styles.modalContent}>
+          <View style={styles.modalTitleContainer}>
+            <Text style={styles.modalTitle}>Delete Item</Text>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text style={styles.deleteButtonText}>X</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.modalText}>Are you sure?</Text>
+          <Text style={styles.modalMessage}>{itemSelected.value}</Text>
+
+          <Button title="Okay" onPress={() => onHandleDelete(itemSelected)} />
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -87,6 +131,9 @@ const styles = StyleSheet.create({
   },
   containerItem: {
     marginVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   item: {
     fontSize: 14,
@@ -97,5 +144,42 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#212121",
     fontWeight: "bold",
+  },
+  deleteButton: {
+    backgroundColor: "#8CBCB9",
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
+  deleteButtonText: {
+    color: "#ffffff",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  modalContent: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    alignItems: "center",
+  },
+  modalTitleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 20,
+    marginHorizontal: 20,
+  },
+  modalText: {
+    fontSize: 16,
+    marginVertical: 10,
+  },
+  modalMessage: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginVertical: 10,
   },
 });
