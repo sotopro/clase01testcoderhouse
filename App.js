@@ -1,6 +1,13 @@
 // import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  FlatList,
+} from "react-native";
 import { themes } from "./src/constants/themes/index";
 
 export default function App() {
@@ -12,11 +19,23 @@ export default function App() {
   };
 
   const onHandleSubmit = () => {
-    setTask("");
     setTasks((currentTasks) => [
       ...currentTasks,
       { id: Math.random(), value: task },
     ]);
+    setTask("");
+  };
+
+  const renderItem = ({ item }) => {
+    return (
+      <View key={`task-${item.id}`} style={styles.containerItem}>
+        <Text style={styles.item}>{item.value}</Text>
+      </View>
+    );
+  };
+
+  const ListHeaderComponent = () => {
+    return tasks.length > 0 && <Text style={styles.titleList}>Task List</Text>;
   };
 
   return (
@@ -35,16 +54,13 @@ export default function App() {
           disabled={task.length === 0}
         />
       </View>
-      {tasks.length > 0 && (
-        <View style={styles.containerList}>
-          <Text style={styles.titleList}>Task List</Text>
-          {tasks.map((item) => (
-            <View key={`task-${item.id}`} style={styles.containerItem}>
-              <Text style={styles.item}>{item.value}</Text>
-            </View>
-          ))}
-        </View>
-      )}
+      <FlatList
+        ListHeaderComponent={ListHeaderComponent}
+        data={tasks}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        style={styles.containerList}
+      />
     </View>
   );
 }
