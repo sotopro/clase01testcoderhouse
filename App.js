@@ -16,8 +16,6 @@ export default function App() {
     setTasks([...tasks, task]);
   };
 
-  console.warn({ tasks });
-
   return (
     <View style={themes.container}>
       <View style={styles.containerTask}>
@@ -27,23 +25,31 @@ export default function App() {
           value={task}
           onChangeText={onHandleInput}
         />
-        <Button title="ADD" color="#8CBCB9" onPress={() => onHandleSubmit()} />
+        <Button
+          title="ADD"
+          color="#8CBCB9"
+          onPress={() => onHandleSubmit()}
+          disabled={task.length === 0}
+        />
       </View>
-      <View style={styles.containerList}>
-        {tasks.map((item, idx) => (
-          <View key={`task-${idx}`} style={styles.containerItem}>
-            <Text style={styles.item}>{item}</Text>
-          </View>
-        ))}
-      </View>
+      {tasks.length > 0 && (
+        <View style={styles.containerList}>
+          <Text style={styles.titleList}>Task List</Text>
+          {tasks.map((item, idx) => (
+            <View key={`task-${idx}`} style={styles.containerItem}>
+              <Text style={styles.item}>{item}</Text>
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   containerTask: {
-    padding: 25,
-    flex: 1,
+    marginTop: 40,
+    paddingHorizontal: 25,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -58,13 +64,18 @@ const styles = StyleSheet.create({
     color: "#212121",
   },
   containerList: {
-    margin: 25,
+    marginHorizontal: 20,
   },
   containerItem: {
-    padding: 10,
+    marginVertical: 10,
   },
   item: {
     fontSize: 14,
+    color: "#212121",
+  },
+  titleList: {
+    marginTop: 10,
+    fontSize: 18,
     color: "#212121",
     fontWeight: "bold",
   },
