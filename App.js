@@ -11,6 +11,8 @@ import {
   Modal,
 } from "react-native";
 import { themes } from "./src/constants/themes/index";
+import { ListHeader } from "./src/components/index";
+
 
 export default function App() {
   const [task, setTask] = useState("");
@@ -58,7 +60,7 @@ export default function App() {
   };
 
   const ListHeaderComponent = () => {
-    return tasks.length > 0 && <Text style={styles.titleList}>Task List</Text>;
+    return tasks.length > 0 && <ListHeader title='Task List' />;
   };
 
   return (
@@ -138,12 +140,6 @@ const styles = StyleSheet.create({
   item: {
     fontSize: 14,
     color: "#212121",
-  },
-  titleList: {
-    marginTop: 10,
-    fontSize: 18,
-    color: "#212121",
-    fontWeight: "bold",
   },
   deleteButton: {
     backgroundColor: "#8CBCB9",
