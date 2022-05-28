@@ -11,7 +11,7 @@ import {
   Modal,
 } from "react-native";
 import { themes } from "./src/constants/themes/index";
-import { ListHeader } from "./src/components/index";
+import { ListHeader, ListItem } from "./src/components/index";
 
 
 export default function App() {
@@ -45,19 +45,8 @@ export default function App() {
     setModalVisible(!modalVisible);
   };
 
-  const renderItem = ({ item }) => {
-    return (
-      <View key={`task-${item.id}`} style={styles.containerItem}>
-        <Text style={styles.item}>{item.value}</Text>
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => handleModal(item.id)}
-        >
-          <Text style={styles.deleteButtonText}>X</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  const renderItem = ({ item }) => <ListItem item={item} onPressItem={handleModal} />
+
 
   const ListHeaderComponent = () => {
     return tasks.length > 0 && <ListHeader title='Task List' />;
@@ -130,26 +119,6 @@ const styles = StyleSheet.create({
   },
   containerList: {
     marginHorizontal: 20,
-  },
-  containerItem: {
-    marginVertical: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  item: {
-    fontSize: 14,
-    color: "#212121",
-  },
-  deleteButton: {
-    backgroundColor: "#8CBCB9",
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-  },
-  deleteButtonText: {
-    color: "#ffffff",
-    fontSize: 14,
-    fontWeight: "bold",
   },
   modalContent: {
     flex: 1,
