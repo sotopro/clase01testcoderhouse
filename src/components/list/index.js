@@ -1,10 +1,10 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import ListHeader from '../list-header/index';
-import ListItem from '../list-item/index';
+import ListHeader from './list-header/index';
+import ListItem from './list-item/index';
 import { styles } from './styles';
 
-const List = ({ tasks, onPressItem  }) => {
+export const List = ({ tasks, onPressItem  }) => {
 
     const ListHeaderComponent = () => {
         return tasks.length > 0 && <ListHeader title='Task List' />;

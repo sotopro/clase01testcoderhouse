@@ -6,12 +6,10 @@ import {
   View,
   TextInput,
   Button,
-  FlatList,
   TouchableOpacity,
-  Modal,
 } from "react-native";
 import { themes } from "./src/constants/themes/index";
-import { List } from "./src/components/index";
+import { List, Modal } from "./src/components/index";
 
 
 export default function App() {
