@@ -11,7 +11,7 @@ import {
   Modal,
 } from "react-native";
 import { themes } from "./src/constants/themes/index";
-import { ListHeader, ListItem } from "./src/components/index";
+import { List } from "./src/components/index";
 
 
 export default function App() {
@@ -45,12 +45,6 @@ export default function App() {
     setModalVisible(!modalVisible);
   };
 
-  const renderItem = ({ item }) => <ListItem item={item} onPressItem={handleModal} />
-
-
-  const ListHeaderComponent = () => {
-    return tasks.length > 0 && <ListHeader title='Task List' />;
-  };
 
   return (
     <View style={themes.container}>
@@ -68,12 +62,9 @@ export default function App() {
           disabled={task.length === 0}
         />
       </View>
-      <FlatList
-        ListHeaderComponent={ListHeaderComponent}
-        data={tasks}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        style={styles.containerList}
+      <List 
+        tasks={tasks}
+        onPressItem={handleModal}
       />
       <Modal
         animationType="slide"
@@ -116,9 +107,6 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 14,
     color: "#212121",
-  },
-  containerList: {
-    marginHorizontal: 20,
   },
   modalContent: {
     flex: 1,
